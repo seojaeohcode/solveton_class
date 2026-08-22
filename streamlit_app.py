@@ -294,7 +294,7 @@ def render_sidebar() -> tuple[bytes, str, int, bool, str, str]:
         analyze_clicked = st.button("Run analysis", type="primary", use_container_width=True)
         st.divider()
         st.markdown('<div class="status-line"><span>Workspace</span><span class="status-ok">● Live</span></div>', unsafe_allow_html=True)
-        st.caption("Python 3.12 · CPU inference")
+        st.caption("Python 3.14 · CPU inference")
 
     signature = hashlib.sha256(source_bytes).hexdigest()
     return source_bytes, source_name, n_clusters, analyze_clicked, signature, nav

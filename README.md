@@ -40,7 +40,7 @@
 3. Repository에 `seojaeohcode/solveton_class`를 선택합니다.
 4. Branch는 `main`으로 선택합니다.
 5. Main file path는 `streamlit_app.py`로 입력합니다.
-6. Python version은 `3.12`를 선택합니다.
+6. Python version은 `3.14`를 선택합니다.
 7. Deploy를 누릅니다.
 
 이 저장소는 Streamlit Cloud가 바로 인식할 수 있도록 진입 파일과 `requirements.txt`를 루트에 두었습니다. 이후 `main` 브랜치에 push하면 Streamlit Cloud가 변경사항을 감지해 앱을 다시 배포합니다.
@@ -59,7 +59,7 @@ LLM key가 없어도 클러스터링, 지도, 검색, 기본 감성 모델, CSV 
 
 ## 로컬 실행
 
-Python 3.12를 권장합니다.
+Python 3.14를 권장합니다.
 
 ```powershell
 python -m venv .venv
@@ -93,7 +93,7 @@ docker run --rm -p 8501:8501 `
   ai-insight-engine
 ```
 
-Docker 설정은 Python 3.12, Streamlit 포트 8501, CPU 기반 과학 계산 패키지, Hugging Face 모델 캐시 volume을 사용합니다. 이미지 생성 시 `pip check`와 Python 컴파일 검사도 실행합니다.
+Docker 설정은 Python 3.14, Streamlit 포트 8501, CPU 기반 과학 계산 패키지, Hugging Face 모델 캐시 volume을 사용합니다. 이미지 생성 시 `pip check`와 Python 컴파일 검사도 실행합니다.
 
 ## CSV 형식
 
@@ -119,12 +119,12 @@ id,text
 Streamlit Cloud와 Docker에서 같은 `requirements.txt`를 사용합니다.
 
 - Streamlit `1.62.0`
-- Python 3.12 호환 버전 고정
+- Python 3.14 호환 버전 고정
 - NumPy, pandas, scikit-learn, Plotly 고정
 - SentenceTransformers 및 Transformers 고정
 - UMAP 선택 기능 포함
 
-Streamlit Cloud에서 의존성 문제가 발생하면 앱 설정의 Python version이 `3.12`인지, 저장소 루트의 `requirements.txt`와 `streamlit_app.py`를 선택했는지 먼저 확인하세요.
+Streamlit Cloud에서 의존성 문제가 발생하면 앱 설정의 Python version이 `3.14`인지, 저장소 루트의 `requirements.txt`와 `streamlit_app.py`를 선택했는지 먼저 확인하세요.
 
 ## 프로젝트 구조
 
