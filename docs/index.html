@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10182e" />
+    <meta
+      name="description"
+      content="Turn a cloud of opinions into a map of what matters."
+    />
+    <title>AI Insight Engine — Signal Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="AI Insight Engine home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>AI INSIGHT ENGINE</span>
+        </a>
+        <div class="topbar-meta">
+          <span class="status-dot"></span>
+          <span>LOCAL-FIRST ANALYSIS</span>
+          <span class="topbar-divider"></span>
+          <span>v1.0 / SIGNAL ATLAS</span>
+        </div>
+        <nav class="part-nav" aria-label="Course parts">
+          <a href="#part1">01 / FOUNDATION</a>
+          <a href="#part2">02 / INSIGHT ENGINE</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="part1-section section-frame" id="part1">
+          <div class="part1-header">
+            <div>
+              <p class="eyebrow">PART 01 / RAW TEXT → EMBEDDING → CLUSTERING</p>
+              <h2>Before the insight,<br /><em>find the shape.</em></h2>
+              <p class="part1-lead">
+                문장을 숫자로 바꾸고, 가까운 것끼리 묶고, 사람이 다시 확인합니다.
+                Part 1은 AI 파이프라인의 첫 번째 체크포인트입니다.
+              </p>
+            </div>
+            <div class="part1-brief">
+              <span class="brief-index">FIELD NOTE 01</span>
+              <strong>NO API KEY<br />REQUIRED</strong>
+              <p>모델을 부르는 것보다<br />결과를 검증하는 일이 먼저입니다.</p>
+              <span class="source-chip" id="part1-source">SAME CSV / LOADING</span>
+            </div>
+          </div>
+
+          <div class="pipeline-track" aria-label="Part 1 pipeline">
+            <div class="pipeline-step is-active"><span>01</span><strong>CSV</strong><small>VALIDATE + CLEAN</small></div>
+            <div class="pipeline-connector"></div>
+            <div class="pipeline-step"><span>02</span><strong>EMBED</strong><small>MEANING → VECTOR</small></div>
+            <div class="pipeline-connector"></div>
+            <div class="pipeline-step"><span>03</span><strong>SIMILARITY</strong><small>COSINE CHECK</small></div>
+            <div class="pipeline-connector"></div>
+            <div class="pipeline-step"><span>04</span><strong>K-MEANS</strong><small>DISCOVER GROUPS</small></div>
+            <div class="pipeline-connector"></div>
+            <div class="pipeline-step"><span>05</span><strong>EVALUATE</strong><small>CHOOSE k + MAP</small></div>
+          </div>
+
+          <div class="part1-readout">
+            <div class="part1-stats">
+              <article class="part1-stat-card">
+                <span class="stat-label">RAW ROWS</span>
+                <strong id="part1-raw-count">—</strong>
+                <span class="stat-foot">before cleaning</span>
+              </article>
+              <article class="part1-stat-card part1-stat-accent">
+                <span class="stat-label">CLEANED</span>
+                <strong id="part1-clean-count">—</strong>
+                <span class="stat-foot">null / blank / duplicate removed</span>
+              </article>
+              <article class="part1-stat-card">
+                <span class="stat-label">VECTOR SPACE</span>
+                <strong id="part1-vector-count">—</strong>
+                <span class="stat-foot">browser n-gram dims · Python spec 384D</span>
+              </article>
+              <article class="part1-stat-card">
+                <span class="stat-label">PART 1 DEFAULT</span>
+                <strong>k=7</strong>
+                <span class="stat-foot">starting point / not a verdict</span>
+              </article>
+            </div>
+
+            <div class="part1-observatory">
+              <div class="observatory-header"><span>MINI EXPERIMENT / COSINE BASELINE</span><span id="part1-experiment-state">LIVE</span></div>
+              <p class="observatory-intro">의미를 숫자로 확인하는 첫 번째 실험입니다.</p>
+              <p class="observatory-note">Pages는 TF-IDF + n-gram baseline을 사용합니다. SentenceTransformer 384D 결과는 Python/Gradio 실행본에서 확인합니다.</p>
+              <div class="similarity-row"><span>01</span><p>지역기업 채용 정보를 찾기 어렵습니다.<br /><i>취업할 만한 회사 정보를 한곳에서 보고 싶어요.</i></p><strong id="part1-similarity-near">—</strong></div>
+              <div class="similarity-row"><span>02</span><p>지역기업 채용 정보를 찾기 어렵습니다.<br /><i>버스 배차간격이 너무 깁니다.</i></p><strong id="part1-similarity-far">—</strong></div>
+              <div class="similarity-key"><span class="key-line near"></span>same signal / higher score <span class="key-line far"></span>different signal / lower score</div>
+            </div>
+          </div>
+
+          <div class="part1-evaluation">
+            <div class="part1-eval-copy">
+              <p class="eyebrow">MODEL CHECK / SILHOUETTE SCAN</p>
+              <h3>Let the data<br /><em>argue for k.</em></h3>
+              <p>k=3부터 10까지 비교해, cluster 내부는 가깝고 cluster 사이는 멀리 떨어지는 지점을 찾습니다. 높은 점수도 정답은 아니며, 실제 문장을 다시 읽어야 합니다.</p>
+              <div class="lesson-prompt"><span>QUESTION TO CARRY</span><p>“AI가 코드를 만들어줬다”와 “내가 요구한 시스템이 제대로 동작한다”는 같은 말일까요?</p></div>
+            </div>
+            <div class="score-board">
+              <div class="score-board-header"><span>k / SILHOUETTE</span><strong id="part1-best-k">SCANNING</strong></div>
+              <div class="score-list" id="part1-score-list"><span class="score-empty">default CSV를 읽는 중입니다…</span></div>
+              <p class="score-note">browser sample · cosine distance approximation</p>
+            </div>
+          </div>
+
+          <div class="part1-notes">
+            <div class="notes-heading"><div><p class="eyebrow">LAB NOTES / BUILD → RUN → VERIFY</p><h3>What to check<br /><em>before Part 2.</em></h3></div><p>AI가 만든 코드를 그대로 믿지 않고, 요구사항과 실행 결과를 대조하는 체크리스트입니다.</p></div>
+            <div class="notes-grid">
+              <details class="lab-note" open><summary><span>MISSION 01</span><strong>Read safely</strong><i>+</i></summary><p>UTF-8-SIG, UTF-8, CP949를 순서대로 시도하고 `text` 컬럼과 업로드 상태를 확인합니다.</p></details>
+              <details class="lab-note"><summary><span>MISSION 02</span><strong>Clean the field</strong><i>+</i></summary><p>copy → trim → null / blank / duplicate 제거 → index reset. 처리 전후 행 수를 비교합니다.</p></details>
+              <details class="lab-note"><summary><span>MISSION 03</span><strong>Meet the data</strong><i>+</i></summary><p>문장 길이 통계와 랜덤 샘플을 먼저 읽습니다. 한 문장에 여러 주제가 섞였는지도 확인합니다.</p></details>
+              <details class="lab-note"><summary><span>MISSION 04</span><strong>Make meaning numeric</strong><i>+</i></summary><p>multilingual MiniLM으로 embedding을 만들고, 의미가 가까운 문장과 다른 문장의 cosine similarity를 비교합니다.</p></details>
+              <details class="lab-note"><summary><span>MISSION 05</span><strong>Cluster, then question</strong><i>+</i></summary><p>k=7 K-Means를 실행한 뒤 cluster별 실제 문장을 읽고, silhouette score로 k=3~10을 다시 비교합니다.</p></details>
+              <details class="lab-note"><summary><span>MISSION 06</span><strong>Project + save</strong><i>+</i></summary><p>PCA 2D scatter로 구조를 보고 `id`, `text`, `cluster`를 UTF-8-SIG CSV로 저장합니다. API Key는 필요하지 않습니다.</p></details>
+            </div>
+            <div class="reflection-line"><span>PART 01 REFLECTION</span><p>Embedding은 문장을 벡터로 옮기고, K-Means는 그 벡터의 모양에서 그룹을 찾습니다. 사람은 k와 결과의 의미를 검증합니다.</p></div>
+          </div>
+
+          <div class="part1-footer-note"><span>PART 01 CHECKPOINT</span><span>CSV → VALIDATE → EMBED → SIMILARITY → K-MEANS → EVALUATE → 2D MAP</span></div>
+        </section>
+
+        <section class="hero section-frame" id="part2">
+          <div class="hero-copy">
+            <p class="eyebrow">CLUSTER → INSIGHT → SEARCH → MAP</p>
+            <h1>Find the<br /><em>signal</em> inside<br />the noise.</h1>
+            <p class="hero-description">
+              의견이 모이면 패턴이 생깁니다. CSV를 올리면 숨은 토픽을 묶고,
+              대표 목소리를 꺼내고, 질문으로 다시 찾을 수 있습니다.
+            </p>
+            <div class="hero-note">
+              <span class="note-index">FIELD NOTE 02</span>
+              <span>브라우저 안에서만 처리됩니다. 데이터가 서버로 전송되지 않습니다.</span>
+            </div>
+          </div>
+          <div class="hero-specimen" aria-label="Abstract topic map preview">
+            <div class="specimen-orbit orbit-one"></div>
+            <div class="specimen-orbit orbit-two"></div>
+            <div class="specimen-axis axis-x"></div>
+            <div class="specimen-axis axis-y"></div>
+            <span class="specimen-label label-a">OUTLIER / 04</span>
+            <span class="specimen-label label-b">HIGH DENSITY</span>
+            <span class="specimen-label label-c">SIGNAL MAP</span>
+            <span class="specimen-point point-a"></span>
+            <span class="specimen-point point-b"></span>
+            <span class="specimen-point point-c"></span>
+            <span class="specimen-point point-d"></span>
+            <span class="specimen-point point-e"></span>
+            <span class="specimen-point point-f"></span>
+            <span class="specimen-center">↗</span>
+            <div class="specimen-caption"><span>topic density</span><strong>01—07</strong></div>
+          </div>
+        </section>
+
+        <section class="workspace-grid section-frame" id="workspace">
+          <aside class="control-panel panel">
+            <div class="panel-kicker"><span>SETUP</span><span>01 / 03</span></div>
+            <h2>Load your<br /><span>field notes.</span></h2>
+            <p class="panel-intro">`text` 컬럼이 있는 CSV를 준비하세요. 파일은 이 브라우저에서만 읽습니다.</p>
+
+            <label class="drop-zone" for="csv-input" id="drop-zone" tabindex="0">
+              <input id="csv-input" type="file" accept=".csv,text/csv" />
+              <span class="upload-glyph" aria-hidden="true">↑</span>
+              <strong id="file-name">CSV 파일을 선택하세요</strong>
+              <span id="file-hint">클릭하거나 이 영역으로 끌어 놓기</span>
+            </label>
+
+            <button class="sample-link" id="sample-button" type="button">
+              <span>⊙</span> 샘플 데이터로 먼저 둘러보기
+            </button>
+
+            <div class="control-block">
+              <div class="control-label-row">
+                <label for="cluster-count">Number of topics</label>
+                <output id="cluster-count-output" for="cluster-count">4</output>
+              </div>
+              <input id="cluster-count" type="range" min="2" max="12" value="4" />
+              <div class="range-hints"><span>2 / broad</span><span>12 / precise</span></div>
+            </div>
+
+            <button class="primary-button" id="analyze-button" type="button">
+              <span>Analyze dataset</span><span class="button-arrow">↗</span>
+            </button>
+            <p class="error-message" id="error-message" role="alert"></p>
+            <p class="privacy-note"><span>◈</span> Private by default · no upload endpoint</p>
+          </aside>
+
+          <div class="results-column">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">OUTPUT / LIVE READOUT</p>
+                <h2>What does the room<br /><em>keep saying?</em></h2>
+              </div>
+              <div class="analysis-state" id="analysis-state"><span class="state-dot"></span> WAITING FOR DATA</div>
+            </div>
+
+            <div class="stats-row" aria-label="Analysis summary">
+              <article class="stat-card">
+                <span class="stat-label">COMMENTS READ</span>
+                <strong id="comment-count">—</strong>
+                <span class="stat-foot">cleaned / deduplicated</span>
+              </article>
+              <article class="stat-card accent-card">
+                <span class="stat-label">TOPICS FOUND</span>
+                <strong id="topic-count">—</strong>
+                <span class="stat-foot">clusters / k-means</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-label">VOCABULARY</span>
+                <strong id="vocabulary-count">—</strong>
+                <span class="stat-foot">terms / n-grams</span>
+              </article>
+            </div>
+
+            <div class="topic-section">
+              <div class="subsection-heading">
+                <div><span class="section-number">02</span><h3>Topic cards</h3></div>
+                <div class="button-cluster"><button class="text-button" id="export-button" type="button" disabled>Export summary <span>↓</span></button><button class="text-button" id="export-comments-button" type="button" disabled>Export comments <span>↓</span></button></div>
+              </div>
+              <div class="topic-grid" id="topic-grid">
+                <div class="empty-state wide-empty">
+                  <span class="empty-cross">＋</span>
+                  <p>분석을 실행하면 이곳에 토픽 카드가 쌓입니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <section class="map-section">
+              <div class="subsection-heading">
+                <div><span class="section-number">03</span><h3>Topic map</h3></div>
+                <span class="map-help">점 하나 = 의견 하나 · PCA / UMAP-lite 비교 · 클릭해서 필터</span>
+              </div>
+              <div class="map-card" id="map-card">
+                <div class="map-toolbar"><span id="map-caption">분석 전 — 지도는 아직 비어 있습니다</span><div class="map-toolbar-actions"><div class="projection-switch" role="group" aria-label="Map projection"><button class="projection-button is-active" data-projection="pca" type="button">PCA</button><button class="projection-button" data-projection="umap" type="button">UMAP</button></div><button id="clear-filter" type="button" class="clear-filter" hidden>clear filter ×</button></div></div>
+                <div class="map-stage" id="map-stage">
+                  <div class="empty-state map-empty" id="map-empty"><span class="empty-cross">✦</span><p>의견 사이의 거리를 그려볼 준비가 되었습니다.</p></div>
+                  <svg id="topic-map" role="img" aria-label="Interactive topic map" hidden></svg>
+                  <div class="map-tooltip" id="map-tooltip" role="status"></div>
+                </div>
+                <div class="map-legend" id="map-legend"></div>
+              </div>
+            </section>
+
+            <section class="sentiment-section">
+              <div class="subsection-heading">
+                <div><span class="section-number">04</span><h3>How does the room feel?</h3></div>
+                <span class="map-help" id="sentiment-mode">browser baseline / ready</span>
+              </div>
+              <div class="sentiment-card">
+                <div class="sentiment-topline"><p>주제별 positive / neutral / negative 비율을 확인합니다.</p><div class="sentiment-actions"><button class="text-button" id="sentiment-button" type="button" disabled>Run baseline <span>↗</span></button><button class="text-button" id="llm-sentiment-button" type="button" disabled>Use LLM <span>↗</span></button></div></div>
+                <div class="sentiment-overview" id="sentiment-overview"><div class="empty-sentiment">분석을 실행하면 감성 비율이 표시됩니다.</div></div>
+                <div class="sentiment-clusters" id="sentiment-clusters"></div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="search-section section-frame" id="semantic-search">
+          <div class="search-intro">
+            <p class="eyebrow">ASK THE DATA / NATURAL LANGUAGE</p>
+            <h2>Search by<br /><em>meaning.</em></h2>
+            <p>정확한 단어를 몰라도 괜찮습니다. 궁금한 상황을 문장으로 물어보세요.</p>
+          </div>
+          <div class="search-console panel">
+            <div class="search-console-top"><span class="console-lamp"></span><span>SEMANTIC SEARCH CONSOLE</span><span class="console-meta">COSINE / TOP-K</span></div>
+            <div class="query-row">
+              <label class="query-field" for="query-input"><span>QUERY_</span><input id="query-input" type="text" placeholder="예: 취업을 준비하는 사람에게 어떤 지원이 필요할까?" /></label>
+              <label class="top-k-field" for="top-k"><span>TOP-K</span><select id="top-k"><option>3</option><option selected>5</option><option>8</option><option>10</option></select></label>
+              <button class="search-button" id="search-button" type="button">Run <span>↗</span></button>
+            </div>
+            <div class="threshold-row"><label for="similarity-threshold"><span>MINIMUM SIMILARITY</span><input id="similarity-threshold" type="range" min="0" max="1" step="0.05" value="0" /></label><output id="threshold-output">0.00</output><button class="text-button" id="export-search-button" type="button" disabled>Export results <span>↓</span></button></div>
+            <p class="search-hint" id="search-hint">분석을 먼저 실행하면 검색 콘솔이 활성화됩니다.</p>
+            <div class="search-results" id="search-results">
+              <div class="empty-search"><span>⌁</span><p>가장 가까운 목소리를 찾아보세요.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="llm-section section-frame" id="llm-summary">
+          <div class="llm-intro">
+            <p class="eyebrow">OPTIONAL / LLM AUGMENTATION</p>
+            <h2>Ask the model<br /><em>what to do next.</em></h2>
+            <p>토픽별 Issue · Root Cause · Action을 자동으로 정리합니다. API key는 저장하지 않고 이 브라우저 메모리에서만 사용합니다.</p>
+          </div>
+          <div class="llm-console panel">
+            <div class="search-console-top"><span class="console-lamp"></span><span>LLM SUMMARY CONSOLE</span><span class="console-meta">OPENAI-COMPATIBLE</span></div>
+            <div class="llm-fields">
+              <label class="llm-field full"><span>API KEY / 입력한 키를 전송에 사용</span><input id="llm-api-key" type="password" autocomplete="off" placeholder="sk-..." /></label>
+              <label class="llm-field"><span>MODEL</span><input id="llm-model" type="text" value="gpt-4o-mini" /></label>
+              <label class="llm-field"><span>BASE URL</span><input id="llm-base-url" type="url" value="https://api.openai.com/v1" /></label>
+            </div>
+            <div class="llm-actions"><button class="primary-button llm-button" id="llm-summary-button" type="button" disabled><span>Summarize topics</span><span class="button-arrow">↗</span></button><button class="text-button clear-key-button" id="clear-llm-key" type="button">Clear key</button></div>
+            <p class="llm-warning">주의: GitHub Pages는 서버가 없으므로 API 요청이 브라우저에서 provider로 직접 나갑니다. 공용 PC에서는 키를 입력하지 말고, 사용 후 Clear key를 누르세요.</p>
+            <p class="llm-status" id="llm-status">분석을 먼저 실행하고 API key를 입력하면 사용할 수 있습니다.</p>
+            <div class="llm-summary-grid" id="llm-summary-grid"><div class="empty-llm"><span>✦</span><p>모델이 토픽을 읽고 실행 가능한 문장으로 바꿉니다.</p></div></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer section-frame">
+        <span>AI INSIGHT ENGINE / PART 02</span>
+        <span>BUILT FOR CURIOUS ROOMS</span>
+        <span>CSV IN · INSIGHT OUT</span>
+      </footer>
+    </div>
+    <script src="app.js" defer></script>
+  </body>
+</html>

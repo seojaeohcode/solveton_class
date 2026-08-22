@@ -1,0 +1,10 @@
+.git
+.github
+.venv
+__pycache__
+*.py[cod]
+.env
+.DS_Store
+docs
+2026 전남광주 청년 AI 솔버톤_루체라
+
