@@ -1,9 +1,7 @@
 """Reusable SentenceTransformer analysis functions for AI Insight Engine.
 
-The GitHub Pages app in ``docs/`` is serverless and uses a lightweight
-browser-native vectorizer. This module keeps the original notebook's
-SentenceTransformer pipeline available for local execution or Hugging Face
-Spaces.
+The Streamlit app uses this module for the full SentenceTransformer pipeline.
+The legacy static version in ``docs/`` is kept as a lightweight fallback.
 """
 
 from functools import lru_cache
@@ -226,7 +224,7 @@ def calculate_silhouette_scores(
 
 
 def make_topic_map(frame: pd.DataFrame, embeddings: np.ndarray, projection: str = "pca"):
-    """Create a PCA or UMAP topic map for the Gradio app."""
+    """Create a PCA or UMAP topic map for the Streamlit app."""
 
     projection = projection.lower()
     if projection == "umap" and umap is not None:

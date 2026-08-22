@@ -1,78 +1,76 @@
-# AI Insight Engine
+# AI Insight Engine — Streamlit
 
-청년 의견 CSV를 **Raw Text → Embedding → Clustering → Insight → Semantic Search → Visualization** 흐름으로 분석하는 웹 앱입니다.
+청년 의견 CSV를 **Raw Text → Embedding → Clustering → Insight → Semantic Search → Visualization** 흐름으로 분석하는 Streamlit 웹 앱입니다.
 
-- GitHub Pages: <https://seojaeohcode.github.io/solveton_class/>
-- Repository: <https://github.com/seojaeohcode/solveton_class>
-- 기본 데이터: `ai_insight_engine_youth_comments.csv`
+- GitHub 저장소: <https://github.com/seojaeohcode/solveton_class>
+- Streamlit 배포: Streamlit Community Cloud에서 이 저장소를 연결해 실행
+- 기본 CSV: `ai_insight_engine_youth_comments.csv`
 
 ## 주요 기능
 
 ### Part 1 — Raw Text → Embedding → Clustering
 
-- CSV 인코딩 자동 처리: UTF-8-SIG, UTF-8, CP949
-- `text` 컬럼 검증 및 결측·빈 문자열·중복 데이터 정제
-- 문장 길이 통계와 샘플 문장 확인
-- SentenceTransformer 기반 다국어 문장 임베딩
-- K-Means 클러스터링 및 cluster별 대표 의견 확인
-- `k=3~10` silhouette score 비교와 추천 k 표시
-- PCA 2차원 시각화
+- UTF-8-SIG, UTF-8, CP949 CSV 인코딩 자동 처리
+- `text` 컬럼 검증
+- null, 빈 문자열, 중복 의견 제거
+- 문장 길이 통계와 랜덤 문장 확인
+- `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` 문장 임베딩
+- K-Means 클러스터링
+- `k=3~10` silhouette score 비교 및 추천 k
+- PCA / UMAP 토픽 맵
 
 ### Part 2 — Cluster → Insight → Search → Web App
 
 - cluster별 키워드와 대표 의견
-- PCA / UMAP-Lite 토픽 맵
-- 토픽 카드 또는 지도 점을 클릭하는 필터링
-- 의미 기반 검색과 similarity threshold 조절
-- 검색 결과 CSV 다운로드
-- 분석 요약·주석 의견·cluster 결과 CSV 다운로드
-- topic별 positive / neutral / negative 비율
-- 입력한 LLM API key를 이용한 Issue / Root Cause / Action 요약
-- LLM 기반 토픽 감성 분석
+- cluster 선택 필터
+- SentenceTransformer 기반 semantic search
+- similarity threshold와 Top-K 조절
+- 다국어 Transformers 감성 분석
+- LLM Issue / Root Cause / Action 요약
+- LLM 감성 분석: 긴 CSV를 여러 chunk로 나누어 처리
+- 토픽 요약, 클러스터, 감성, 검색 결과 CSV 다운로드
 
-## GitHub Pages에서 사용하기
+## Streamlit Community Cloud 배포
 
-정적 웹 앱은 브라우저에서 바로 실행됩니다.
+### 1. GitHub 저장소 연결
 
-1. [AI Insight Engine](https://seojaeohcode.github.io/solveton_class/)에 접속합니다.
-2. 기본 CSV가 자동으로 선택·분석됩니다.
-3. 다른 파일을 사용하려면 `text` 컬럼이 포함된 CSV를 업로드합니다.
-4. 검색어, cluster, similarity threshold, PCA/UMAP-Lite 옵션을 조절합니다.
+1. [Streamlit Community Cloud](https://share.streamlit.io/)에 GitHub 계정으로 로그인합니다.
+2. `Create app` 또는 `Deploy an app`을 선택합니다.
+3. Repository에 `seojaeohcode/solveton_class`를 선택합니다.
+4. Branch는 `main`으로 선택합니다.
+5. Main file path는 `streamlit_app.py`로 입력합니다.
+6. Python version은 `3.12`를 선택합니다.
+7. Deploy를 누릅니다.
 
-GitHub Pages 버전은 서버 없이 실행되므로 Python 패키지를 설치할 필요가 없습니다. 브라우저 호환성을 위해 정적 버전은 TF-IDF와 단어·문자 n-gram을 사용하며, Python/Gradio 버전의 SentenceTransformer 임베딩과 결과가 완전히 같지는 않습니다.
+이 저장소는 Streamlit Cloud가 바로 인식할 수 있도록 진입 파일과 `requirements.txt`를 루트에 두었습니다. 이후 `main` 브랜치에 push하면 Streamlit Cloud가 변경사항을 감지해 앱을 다시 배포합니다.
 
-`main` 브랜치에 push하면 `.github/workflows/deploy-pages.yml`이 `docs/` 폴더를 자동 배포합니다.
+### 2. LLM Secrets 설정
 
-## LLM API key 사용
+LLM key는 GitHub에 올리지 않습니다. Streamlit 앱의 `Settings → Secrets`에 다음처럼 입력할 수 있습니다.
 
-웹 앱의 `LLM Console`에서 다음 값을 입력할 수 있습니다.
+```toml
+OPENAI_API_KEY = "your-api-key"
+```
 
-- API key
-- model name: 기본값 `gpt-4o-mini`
-- OpenAI-compatible base URL: 기본값 `https://api.openai.com/v1`
+또는 앱 화면의 `LLM Console`에서 세션별로 직접 입력할 수 있습니다. `secrets.toml`은 `.gitignore`에 등록되어 있습니다.
 
-Pages 버전에서는 입력한 key를 브라우저 메모리에만 보관하고 저장하지 않습니다. 그래도 공개 웹 페이지에서 직접 입력한 key는 브라우저 네트워크 요청에 사용되므로 공용 PC나 타인과 공유하는 환경에서는 사용하지 마세요. 사용이 끝나면 `Clear key`를 누르고, 필요하면 API 제공자의 대시보드에서 key를 폐기하세요.
+LLM key가 없어도 클러스터링, 지도, 검색, 기본 감성 모델, CSV 다운로드는 사용할 수 있습니다.
 
-LLM key가 없어도 클러스터링, 검색, 지도, 기본 감성 분석, CSV 다운로드 기능은 사용할 수 있습니다.
+## 로컬 실행
 
-## 로컬 Python/Gradio 실행
-
-Python 3.11 환경을 권장합니다. 의존성 버전은 `requirements.txt`에 고정되어 있습니다.
+Python 3.12를 권장합니다.
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-python app.py
+streamlit run streamlit_app.py
 ```
 
-실행 후 <http://localhost:7860>을 엽니다.
+실행 후 <http://localhost:8501>을 엽니다.
 
-처음 실행하면 다음 모델을 다운로드할 수 있습니다.
-
-- Embedding: `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`
-- Sentiment: `cardiffnlp/twitter-xlm-roberta-base-sentiment`
+처음 분석할 때 임베딩 모델과 감성 모델을 Hugging Face에서 다운로드하므로 시간이 걸릴 수 있습니다. 이후에는 프로세스 캐시를 사용합니다.
 
 ## Docker 실행
 
@@ -83,29 +81,22 @@ docker compose build
 docker compose up
 ```
 
-실행 후 <http://localhost:7860>에 접속합니다.
+실행 후 <http://localhost:8501>에 접속합니다.
 
-단일 이미지로 실행하려면 다음 명령을 사용합니다.
+단일 이미지로 실행하려면:
 
 ```powershell
 docker build -t ai-insight-engine .
-docker run --rm -p 7860:7860 `
-  -e GRADIO_SERVER_NAME=0.0.0.0 `
+docker run --rm -p 8501:8501 `
+  -e STREAMLIT_SERVER_ADDRESS=0.0.0.0 `
   ai-insight-engine
 ```
 
-Docker 이미지는 Python 3.11 기반이며 다음 검사를 포함합니다.
-
-- 고정 버전 의존성 설치
-- `pip check`
-- Python 문법 컴파일 검사
-- CPU 실행 환경 설정
-
-Hugging Face 모델 캐시는 `huggingface-cache` Docker volume에 보존되어 다음 실행부터 재사용됩니다.
+Docker 설정은 Python 3.12, Streamlit 포트 8501, CPU 기반 과학 계산 패키지, Hugging Face 모델 캐시 volume을 사용합니다. 이미지 생성 시 `pip check`와 Python 컴파일 검사도 실행합니다.
 
 ## CSV 형식
 
-분석 대상 컬럼인 `text`는 필수입니다. `id`는 선택 사항입니다.
+`text` 컬럼은 필수이고 `id` 컬럼은 선택 사항입니다.
 
 ```csv
 id,text
@@ -113,53 +104,50 @@ id,text
 2,"지역 청년을 위한 상담 시간이 더 다양했으면 합니다."
 ```
 
-업로드 시 다음 정제가 수행됩니다.
+분석 전에 다음 정제가 수행됩니다.
 
-- 앞뒤 공백 제거
+- text 앞뒤 공백 제거
 - null text 제거
 - 빈 문자열 제거
 - 중복 text 제거
 - index 재설정
+- id가 없으면 자동 생성
+
+## 의존성 관리
+
+Streamlit Cloud와 Docker에서 같은 `requirements.txt`를 사용합니다.
+
+- Streamlit `1.62.0`
+- Python 3.12 호환 버전 고정
+- NumPy, pandas, scikit-learn, Plotly 고정
+- SentenceTransformers 및 Transformers 고정
+- UMAP 선택 기능 포함
+
+Streamlit Cloud에서 의존성 문제가 발생하면 앱 설정의 Python version이 `3.12`인지, 저장소 루트의 `requirements.txt`와 `streamlit_app.py`를 선택했는지 먼저 확인하세요.
 
 ## 프로젝트 구조
 
 ```text
 .
-├─ docs/                              # GitHub Pages 정적 웹 앱
-│  ├─ index.html
-│  ├─ styles.css
-│  ├─ app.js
-│  ├─ ai_insight_engine_youth_comments.csv
-│  └─ .nojekyll
-├─ analysis.py                        # Python 분석 함수
-├─ app.py                             # Gradio 앱
-├─ requirements.txt                   # 고정 Python 의존성
-├─ Dockerfile                         # 재현 가능한 CPU 이미지
-├─ docker-compose.yml                 # Docker Compose 실행 설정
+├─ streamlit_app.py                   # Streamlit Cloud 진입 파일
+├─ analysis.py                        # 임베딩·클러스터·검색·감성·LLM 함수
+├─ requirements.txt                   # Streamlit Cloud/Docker 공통 의존성
+├─ .streamlit/config.toml             # Streamlit 테마와 서버 설정
+├─ Dockerfile                         # Streamlit용 재현 가능한 이미지
+├─ docker-compose.yml                 # 로컬 컨테이너 실행 설정
 ├─ ai_insight_engine_youth_comments.csv # 기본 CSV
 ├─ sample-data.csv                    # 테스트용 샘플 CSV
-├─ LICENSE
-└─ .github/workflows/deploy-pages.yml # Pages 자동 배포
+├─ docs/                              # 이전 정적 버전 보관본
+└─ LICENSE
 ```
 
-## 문제 해결
+## 보안 주의사항
 
-### GitHub Pages가 갱신되지 않는 경우
-
-1. GitHub 저장소의 `Actions` 탭에서 `Deploy AI Insight Engine to GitHub Pages` 실행 결과를 확인합니다.
-2. 브라우저에서 `Ctrl+F5`로 캐시를 새로고침합니다.
-3. Pages 주소가 `https://seojaeohcode.github.io/solveton_class/`인지 확인합니다.
-
-### CSV가 로드되지 않는 경우
-
-- 파일 확장자가 `.csv`인지 확인합니다.
-- 컬럼명이 정확히 `text`인지 확인합니다.
-- 로컬 파일을 직접 여는 대신 HTTP 서버나 GitHub Pages 주소로 접속합니다.
-
-### Docker 실행이 느린 경우
-
-첫 실행에서는 임베딩·감성 모델을 다운로드하므로 시간이 걸릴 수 있습니다. 이후에는 Docker volume의 모델 캐시를 사용합니다.
+- API key를 Python 코드, CSV, README, GitHub Actions 파일에 입력하지 않습니다.
+- Streamlit Cloud에서는 `Settings → Secrets`를 사용합니다.
+- 앱 화면에 직접 입력한 key는 현재 세션에서 LLM 요청에 사용됩니다.
+- 노출이 의심되는 key는 즉시 API 제공자 대시보드에서 폐기하고 새로 발급합니다.
 
 ## 라이선스
 
-이 프로젝트의 라이선스는 저장소의 [LICENSE](./LICENSE) 파일을 확인하세요.
+자세한 내용은 [LICENSE](./LICENSE) 파일을 확인하세요.
