@@ -55,6 +55,8 @@ OPENAI_API_KEY = "your-api-key"
 
 또는 앱 화면의 `LLM Console`에서 세션별로 직접 입력할 수 있습니다. `secrets.toml`은 `.gitignore`에 등록되어 있습니다.
 
+로컬에서는 `.env.example`을 `.env`로 복사한 뒤 `OPENAI_API_KEY`를 입력하면 앱이 자동으로 읽습니다. `.env`는 Git에 올라가지 않습니다.
+
 LLM key가 없어도 클러스터링, 지도, 검색, 기본 감성 모델, CSV 다운로드는 사용할 수 있습니다.
 
 ## 로컬 실행
@@ -119,6 +121,7 @@ id,text
 Streamlit Cloud와 Docker에서 같은 `requirements.txt`를 사용합니다.
 
 - Streamlit `1.62.0`
+- python-dotenv `1.1.1`
 - Python 3.14 호환 버전 고정
 - NumPy, pandas, scikit-learn, Plotly 고정
 - SentenceTransformers 및 Transformers 고정
@@ -134,6 +137,7 @@ Streamlit Cloud에서 의존성 문제가 발생하면 앱 설정의 Python vers
 ├─ analysis.py                        # 임베딩·클러스터·검색·감성·LLM 함수
 ├─ requirements.txt                   # Streamlit Cloud/Docker 공통 의존성
 ├─ .streamlit/config.toml             # Streamlit 테마와 서버 설정
+├─ .env.example                        # 로컬 환경변수 예시
 ├─ Dockerfile                         # Streamlit용 재현 가능한 이미지
 ├─ docker-compose.yml                 # 로컬 컨테이너 실행 설정
 ├─ ai_insight_engine_youth_comments.csv # 기본 CSV

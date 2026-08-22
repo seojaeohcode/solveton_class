@@ -6,10 +6,12 @@ from datetime import datetime
 from html import escape
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 from typing import Any
 
+from dotenv import load_dotenv
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -40,6 +42,8 @@ NAV_ITEMS = {
     "Quality Lab": "⌁",
 }
 ACCENTS = ["#68e8ff", "#9d8cff", "#ffb76b", "#5ce1a8", "#ff7e9f"]
+
+load_dotenv(APP_DIR / ".env")
 
 st.set_page_config(
     page_title="AI Insight Engine · Signal Desk",
@@ -211,6 +215,19 @@ def sentiment_summary(frame: pd.DataFrame) -> pd.DataFrame:
 
 def csv_bytes(frame: pd.DataFrame) -> bytes:
     return frame.to_csv(index=False).encode("utf-8-sig")
+
+
+def secret_value(name: str) -> str:
+    """Read a local .env/environment value, then fall back to Streamlit Secrets."""
+
+    environment_value = os.getenv(name, "").strip()
+    if environment_value:
+        return environment_value
+    try:
+        value = st.secrets.get(name, "")
+        return str(value).strip() if value else ""
+    except Exception:
+        return ""
 
 
 def secret_value(name: str) -> str:
