@@ -21,6 +21,7 @@
 
 ### Part 2 — Cluster → Insight → Search → Web App
 
+- 운영 대시보드형 Signal Desk UI: Overview / Topic Lab / Search / Sentiment / LLM Studio / Exports
 - cluster별 키워드와 대표 의견
 - cluster 선택 필터
 - SentenceTransformer 기반 semantic search
